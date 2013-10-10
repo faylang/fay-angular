@@ -1,0 +1,8 @@
+*.hi
+*.o
+.cabal-sandbox
+TAGS
+cabal-dev
+cabal.sandbox.config
+dist/
+src/*.js
