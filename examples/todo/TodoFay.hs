@@ -8,6 +8,8 @@ module TodoFay (
   , remaining
   , addTodo
   , archive
+  , StateController(..)
+  , todoSC
 ) where
 
 import Fay.Text
@@ -41,3 +43,10 @@ remaining = Prelude.length . filter (not . done) . todos
 
 archive :: TodoState -> TodoState
 archive (TS ts txt) = TS (filter (not . done) ts) txt
+
+data StateController = SC
+  { muts :: [Text]
+  , gets :: [Text]
+  }
+
+todoSC = SC ["addTodo", "archive"] ["remaining"]
