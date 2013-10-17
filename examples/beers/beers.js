@@ -1,5 +1,5 @@
 function BeerCounter($scope, $locale) {
-  $scope.beers = [0, 1, 2, 3, 4, 5, 6];
+  $scope.beers = Strict.BeersFay.beers;
   if ($locale.id == 'en-us') {
     $scope.beerForms = {
       0: 'no beers',
