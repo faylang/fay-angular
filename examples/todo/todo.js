@@ -1,25 +1,21 @@
 function TodoCtrl($scope) {
-  var state = Strict.TodoFay.initialState;
+  $scope.state = Strict.TodoFay.initialState;
   var sc = Strict.TodoFay.todoSC;
-
-  $scope.state = function () {
-    return state;
-  }
 
   var mutate = function (f) {
     return (function () {
       console.log("mutate " + f)
-      state = Strict.TodoFay[f](state);
+      $scope.state = Strict.TodoFay[f]($scope.state);
     })
   }
 
   var fayget = function (f) {
     return (function () {
-      return Strict.TodoFay[f](state);
+      return Strict.TodoFay[f]($scope.state);
     })
   }
 
-  console.log(state.todos);
+  console.log($scope.state.todos);
   console.log(sc.muts);
   for (var m in sc.muts) {
     console.log("Setting up mutator for " + sc.muts[m]);
