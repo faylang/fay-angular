@@ -2,7 +2,10 @@
 {-# LANGUAGE RebindableSyntax  #-}
 
 module Angular (
-    NgPluralize(..)
+    Directive(..)
+  , directive
+
+  , NgPluralize(..)
   , ngPluralize
   , ngPlurals
 ) where
@@ -10,6 +13,18 @@ module Angular (
 import Fay.Text
 import FFI
 import Prelude
+
+data Directive = Directive
+  { require    :: Defined Text
+  , restrict   :: Defined Text
+  , transclude :: Defined Bool
+  , template   :: Defined Text
+  , replace    :: Defined Bool
+  }
+
+directive :: Directive
+directive = Directive Undefined Undefined Undefined Undefined Undefined
+
 
 -- | http://docs.angularjs.org/api/ng.directive:ngPluralize
 data NgPluralize = NgPluralize

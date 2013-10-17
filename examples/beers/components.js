@@ -1,10 +1,9 @@
 angular.module('components', []).
   directive('tabs', function() {
-    return {
-      restrict: 'E',
-      transclude: true,
-      scope: {},
-      controller: function($scope, $element) {
+    console.log(Strict.ComponentsFay.tabs);
+    var d = Strict.ComponentsFay.tabs;
+    d.scope = {},
+    d.controller = function($scope, $element) {
         var panes = $scope.panes = [];
  
         $scope.select = function(pane) {
@@ -18,31 +17,14 @@ angular.module('components', []).
           if (panes.length == 0) $scope.select(pane);
           panes.push(pane);
         }
-      },
-      template:
-        '<div class="tabbable">' +
-          '<ul class="nav nav-tabs">' +
-            '<li ng-repeat="pane in panes" ng-class="{active:pane.selected}">'+
-              '<a href="" ng-click="select(pane)">{{pane.title}}</a>' +
-            '</li>' +
-          '</ul>' +
-          '<div class="tab-content" ng-transclude></div>' +
-        '</div>',
-      replace: true
-    };
+      }
+    return d;
   }).
   directive('pane', function() {
-    return {
-      require: '^tabs',
-      restrict: 'E',
-      transclude: true,
-      scope: { title: '@' },
-      link: function(scope, element, attrs, tabsCtrl) {
+    var d = Strict.ComponentsFay.pane;
+    d.scope = { title: '@' },
+    d.link = function(scope, element, attrs, tabsCtrl) {
         tabsCtrl.addPane(scope);
-      },
-      template:
-        '<div class="tab-pane" ng-class="{active: selected}" ng-transclude>' +
-        '</div>',
-      replace: true
-    };
+      }
+    return d;
   })

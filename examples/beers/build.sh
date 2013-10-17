@@ -1,2 +1,2 @@
 #!/bin/sh
-fay -p --package fay-text BeersFay.hs --strict Angular,BeersFay
+fay -p --package fay-text Main.hs --strict Angular,BeersFay,ComponentsFay
