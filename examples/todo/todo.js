@@ -1,5 +1,5 @@
 function TodoCtrl($scope) {
-  var state = new Strict.TodoFay.initialState(7);
+  var state = Strict.TodoFay.initialState;
   var sc = Strict.TodoFay.todoSC;
 
   $scope.state = function () {

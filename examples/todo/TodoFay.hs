@@ -32,8 +32,8 @@ initialTodos =
     , Todo "Write a fay-angular app" False
     ]
 
-initialState :: Int -> TodoState
-initialState _ = TS initialTodos ""
+initialState :: TodoState
+initialState = TS initialTodos ""
 
 addTodo :: TodoState -> TodoState
 addTodo (TS ts0 txt) = TS (ts0 ++ [Todo txt False]) ""
