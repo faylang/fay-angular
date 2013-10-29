@@ -1,2 +1,2 @@
 #!/bin/sh
-fay --package fay-text TodoFay.hs --strict TodoFay
+fay --package fay-text,fay-angular TodoFay.hs --strict Angular,TodoFay

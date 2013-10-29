@@ -2,7 +2,9 @@
 {-# LANGUAGE RebindableSyntax  #-}
 
 module Angular (
-    Directive(..)
+    StateController(..)
+
+  , Directive(..)
   , directive
 
   , NgPluralize(..)
@@ -13,6 +15,11 @@ module Angular (
 import Fay.Text
 import FFI
 import Prelude
+
+data StateController = SC
+  { muts :: [Text]
+  , gets :: [Text]
+  }
 
 data Directive = Directive
   { require    :: Defined Text
