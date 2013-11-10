@@ -16,8 +16,8 @@ import Fay.Text
 import FFI
 import Prelude
 
-data StateController = SC
-  { muts :: [Text]
+data StateController a = SC
+  { muts :: [(a -> a)]
   , gets :: [Text]
   }
 

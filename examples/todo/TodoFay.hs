@@ -44,4 +44,5 @@ remaining = Prelude.length . filter (not . done) . todos
 archive :: TodoState -> TodoState
 archive (TS ts txt) = TS (filter (not . done) ts) txt
 
-todoSC = SC ["addTodo", "archive"] ["remaining"]
+todoSC :: StateController TodoState
+todoSC = SC [addTodo, archive] ["remaining"]
