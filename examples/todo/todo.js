@@ -1,4 +1,7 @@
-function TodoCtrl($scope) {
+TodoCtrl = Strict.Angular.stateController(Strict.TodoFay.todoSC, Strict.TodoFay.initialState);
+
+/*
+TodoCtrl = function ($scope) {
   $scope.state = Strict.TodoFay.initialState;
   var sc = Strict.TodoFay.todoSC;
 
@@ -26,3 +29,4 @@ function TodoCtrl($scope) {
     $scope[sc.gets[g]] = fayget(sc.gets[g]);
   }
 }
+*/
