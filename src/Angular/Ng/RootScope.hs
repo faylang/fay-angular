@@ -7,11 +7,6 @@ data NgModelKey
 data NgModelRef = NgModelRef NgScope NgModelKey
 refPrefix = "m."
 
-ngDigest :: NgScope -> Fay NgScope
-ngDigest = ffi "%1.$digest()"
-
---ngApply :: NgScope -> -> Fay NgScope
-
 ngModelKey :: String -> Fay NgModelKey
 ngModelKey = ffi "AngularFayCached['$parse'](%1)"
 
@@ -41,4 +36,17 @@ ngModelWriteStr (NgModelRef ng k) n = ngModelWriteStr' ng k n
 ngAttachFunc :: NgScope -> String -> (a -> Fay b) -> Fay()
 ngAttachFunc = ffi "%1[%2] = %3"
 
+ngAttachFunc2 :: NgScope -> String -> (a -> b -> Fay c) -> Fay()
+ngAttachFunc2 = ffi "%1[%2] = %3"
 
+ngAttachFunc3 :: NgScope -> String -> (a -> b -> c -> Fay d) -> Fay()
+ngAttachFunc3 = ffi "%1[%2] = %3"
+
+ngAttachFunc4 :: NgScope -> String -> (a -> b -> c -> d -> Fay e) -> Fay()
+ngAttachFunc4 = ffi "%1[%2] = %3"
+
+ngDigest :: NgScope -> (a -> Fay()) -> Fay()
+ngDigest = ffi "%1.$digest(%2)"
+
+ngApply :: NgScope -> (a -> Fay()) -> Fay()
+ngApply = ffi "%1.$apply(%2)"
