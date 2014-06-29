@@ -9,7 +9,7 @@ data NgModule
 data NgController
 
 data NgModelKey 
-data NgModelRef ng = NgModelRef ng NgModelKey
+data NgModelRef = NgModelRef NgScope NgModelKey
 refPrefix = "m."
 
 newNgModule :: String -> [String] -> Fay NgModule
@@ -27,7 +27,7 @@ ngInject = ffi "%1.get(%2)"
 ngModelKey :: String -> Fay NgModelKey
 ngModelKey = ffi "angular.injector(['ng']).get('$parse')(%1)"
 
-ngModelRef :: String -> ng -> Fay (NgModelRef ng)
+ngModelRef :: String -> NgScope -> Fay NgModelRef
 ngModelRef path ng = do
   k <- ngModelKey $ refPrefix ++ path
   return $ NgModelRef ng k
@@ -35,19 +35,19 @@ ngModelRef path ng = do
 ngModelRead' :: a -> NgModelKey -> Fay b 
 ngModelRead' = ffi "%1(%2)"
 
-ngModelRead :: (NgModelRef ng) -> Fay a
+ngModelRead :: NgModelRef -> Fay a
 ngModelRead (NgModelRef ng k) = ngModelRead' ng k
 
 ngModelWrite' :: a -> NgModelKey -> n -> Fay()
 ngModelWrite' = ffi "%2.assign(%1, %3)"
 
-ngModelWrite :: (NgModelRef a) -> n -> Fay()
+ngModelWrite :: NgModelRef -> n -> Fay()
 ngModelWrite (NgModelRef ng k) n = ngModelWrite' ng k n
 
 ngModelWriteStr' :: a -> NgModelKey -> String -> Fay()
 ngModelWriteStr' = ffi "%2.assign(%1, %3)"
 
-ngModelWriteStr :: (NgModelRef a) -> String -> Fay()
+ngModelWriteStr :: NgModelRef -> String -> Fay()
 ngModelWriteStr (NgModelRef ng k) n = ngModelWriteStr' ng k n
 
 ngController ::  String -> (NgScope -> NgInjector -> Fay()) -> NgModule -> Fay NgController
