@@ -11,5 +11,4 @@ barCtrl scope _ = do
   jello <- model "jello"
   ngModelWriteStr jello "yellow world"
 
-
   attach "squirles" $ \_ -> ngModelWriteStr jello "yellow squirles?"
