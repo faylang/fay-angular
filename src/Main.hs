@@ -13,4 +13,4 @@ barCtrl scope = do
 main :: Fay()
 main = do
   ctrl <- newNgModule "foo" [] >>= ngController "bar" barCtrl
-  print ctrl
+  print ";)"
