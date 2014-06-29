@@ -5,8 +5,15 @@ import FFI
 
 barCtrl :: NgScope -> NgInjector -> Fay()
 barCtrl scope injector = do
-  jello <- ngModelRef "jello" scope
+  let attach = ngAttachFunc scope
+  let model  = ngModelRef scope
+
+  jello <- model "jello"
   ngModelWriteStr jello "yellow world"
+
+
+  attach "squirles" $ \_ ->
+    ngModelWriteStr jello "yellow squirles?"
 
 main :: Fay()
 main = do

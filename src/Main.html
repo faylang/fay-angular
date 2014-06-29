@@ -3,11 +3,18 @@
   <head>
     <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
     <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.18/angular.min.js"></script>
+    <script type="text/javascript">
+      AngularFayCached = {};
+      AngularFayCached['ngInjector'] = angular.injector(['ng']);
+      AngularFayCached['$parse']     = AngularFayCached['ngInjector'].get('$parse');
+    </script>
     <script type="text/javascript" src="Main.js"></script>
   </head>
   <body ng-app="foo">
     <div ng-controller="bar">
       {{m.jello}}
+      <br/>
+      <button ng-click="squirles()" >Squirles?</button
     </div>
   </body>
 </html>
