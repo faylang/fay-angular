@@ -1,29 +1,16 @@
-module Angular where
+module Angular.Ng.RootScope where
 
 import FFI
 
-data Ng
 data NgScope
-data NgInjector
-data NgModule
-data NgControllerRef
-type NgController = (NgScope -> NgInjector -> Fay())
-
 data NgModelKey 
 data NgModelRef = NgModelRef NgScope NgModelKey
 refPrefix = "m."
 
-newNgModule :: String -> [String] -> Fay NgModule
-newNgModule = ffi "angular.module(%1, %2)"
-
-ngModule :: String -> Fay NgModule
-ngModule = ffi "angular.module(%1)"
-
 ngDigest :: NgScope -> Fay NgScope
 ngDigest = ffi "%1.$digest()"
 
-ngInject :: NgInjector -> String -> Fay Ng 
-ngInject = ffi "%1.get(%2)"
+--ngApply :: NgScope -> -> Fay NgScope
 
 ngModelKey :: String -> Fay NgModelKey
 ngModelKey = ffi "AngularFayCached['$parse'](%1)"
@@ -54,5 +41,4 @@ ngModelWriteStr (NgModelRef ng k) n = ngModelWriteStr' ng k n
 ngAttachFunc :: NgScope -> String -> (a -> Fay b) -> Fay()
 ngAttachFunc = ffi "%1[%2] = %3"
 
-ngController ::  String -> (NgScope -> NgInjector -> Fay()) -> NgModule -> Fay NgControllerRef
-ngController = ffi "%3.controller(%1, ['$scope','$injector', %2])"
+
