@@ -3,8 +3,8 @@ module Main (main) where
 import Angular
 import FFI
 
-barCtrl :: NgScope -> NgInjector -> Fay()
-barCtrl scope injector = do
+barCtrl :: NgController
+barCtrl scope _ = do
   let attach = ngAttachFunc scope
   let model  = ngModelRef scope
 

@@ -6,7 +6,8 @@ data Ng
 data NgScope
 data NgInjector
 data NgModule
-data NgController
+data NgControllerRef
+type NgController = (NgScope -> NgInjector -> Fay())
 
 data NgModelKey 
 data NgModelRef = NgModelRef NgScope NgModelKey
@@ -46,11 +47,12 @@ ngModelWrite (NgModelRef ng k) n = ngModelWrite' ng k n
 
 ngModelWriteStr' :: context -> NgModelKey -> String -> Fay()
 ngModelWriteStr' = ffi "%2.assign(%1, %3)"
+
 ngModelWriteStr :: NgModelRef -> String -> Fay()
 ngModelWriteStr (NgModelRef ng k) n = ngModelWriteStr' ng k n
 
 ngAttachFunc :: NgScope -> String -> (a -> Fay b) -> Fay()
 ngAttachFunc = ffi "%1[%2] = %3"
 
-ngController ::  String -> (NgScope -> NgInjector -> Fay()) -> NgModule -> Fay NgController
+ngController ::  String -> (NgScope -> NgInjector -> Fay()) -> NgModule -> Fay NgControllerRef
 ngController = ffi "%3.controller(%1, ['$scope','$injector', %2])"
