@@ -1,10 +1,7 @@
-module Main (main) where
+module Controllers.BarCtrl where
 
-import Angular.Auto.Injector
-import Angular.Module
 import Angular.Ng.RootScope
-import Angular.Ng.Controller
-import FFI
+import Angular.Ng.Controller 
 
 barCtrl :: NgController
 barCtrl scope _ = do
@@ -16,8 +13,3 @@ barCtrl scope _ = do
 
 
   attach "squirles" $ \_ -> ngModelWriteStr jello "yellow squirles?"
-
-main :: Fay()
-main = do
-  ctrl <- newNgModule "foo" [] >>= ngController "bar" barCtrl
-  putStrLn "angular fay is moving"
