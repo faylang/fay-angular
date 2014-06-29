@@ -15,5 +15,5 @@ ngModule = ffi "angular.module(%1)"
 ngCtrlPrep :: [String] -> (a -> Fay()) -> Fay [b]
 ngCtrlPrep = ffi "(function(){})()"
 
-ngController :: NgModule -> String -> (a -> Fay()) -> Fay NgController
-ngController = ffi "%1.controller(%2, ['$scope', %3])"
+ngController ::  String -> (NgScope -> Fay()) -> NgModule -> Fay NgController
+ngController = ffi "%3.controller(%1, ['$scope', %2])"
