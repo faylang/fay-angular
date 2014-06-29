@@ -3,14 +3,12 @@ module Main (main) where
 import Angular
 import FFI
 
-setScopeStr :: NgScope -> String -> String -> Fay()
-setScopeStr = ffi "%1[%2] = %3"
-
-barCtrl :: NgScope -> Fay()
-barCtrl scope = do
-  setScopeStr scope "jello" "yellow"
+barCtrl :: NgScope -> NgInjector -> Fay()
+barCtrl scope injector = do
+  jello <- ngModelRef "jello" scope
+  ngModelWriteStr jello "fellow"
 
 main :: Fay()
 main = do
   ctrl <- newNgModule "foo" [] >>= ngController "bar" barCtrl
-  print ";)"
+  putStrLn "angular fay is moving"
