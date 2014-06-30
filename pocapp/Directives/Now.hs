@@ -11,8 +11,10 @@ getTime = ffi "Date.now()"
 
 link :: Linking
 link scope element attrs = do
-  time <- getTime
-  setHtml (pack . show $ time) element 
+  let f = getTime >>= show
+  print f
+  --time <- getTime
+  --setHtml (pack . show $ time) element 
   return ()
 
 now :: Directive
