@@ -33,6 +33,12 @@ ngModelWriteStr' = ffi "%2.assign(%1, %3)"
 ngModelWriteStr :: NgModelRef -> String -> Fay()
 ngModelWriteStr (NgModelRef ng k) n = ngModelWriteStr' ng k n
 
+ngModelWriteLst' :: context -> NgModelKey -> [String] -> Fay()
+ngModelWriteLst' = ffi "%2.assign(%1, %3)"
+
+ngModelWriteLst :: NgModelRef -> [String] -> Fay()
+ngModelWriteLst (NgModelRef ng k) n = ngModelWriteLst' ng k n
+
 ngAttachFunc :: NgScope -> String -> (a -> Fay b) -> Fay()
 ngAttachFunc = ffi "%1[%2] = %3"
 
