@@ -10,17 +10,13 @@ getTime :: Fay int
 getTime = ffi "Date.now()"
 
 link :: Linking
-link scope element attrs = do
+link _ element _ = do
   time <- getTime
   setHtml (pack . show $ time) element
   return ()
 
-now :: Directive
-now [l] = do
-  def <- newNgDirectiveDef
-  ngDirectiveDef def l
-  return def
-
 init :: NgModule -> Fay()
 init m = do
-  now [(Link link)] >>= ngDirective m "now"
+  ngDirectiveDefinition [(Link link)] >>= ngDirective m "now"
+
+init _ = return ()
