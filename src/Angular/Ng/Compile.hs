@@ -31,28 +31,28 @@ data DirectiveDefinition
 ngDirective :: NgModule -> String -> DirectiveDefinition -> Fay()
 ngDirective = ffi "%1.directive(%2, function(){ return %3 })"
 
-newNgDirectiveDefinition   :: Fay DirectiveDefinition
-newNgDirectiveDefinition   = ffi "new Object()"
+newNgDirectiveDefinition    :: Fay DirectiveDefinition
+newNgDirectiveDefinition    = ffi "new Object()"
 
-ngDirectiveDefinitionFunc2 :: DirectiveDefinition -> String -> (a -> b -> Fay()) -> Fay()
-ngDirectiveDefinitionFunc2 = ffi "%1[%2] = %3"
+ngDirectiveDefinitionFunc2  :: DirectiveDefinition -> String -> (a -> b -> Fay()) -> Fay()
+ngDirectiveDefinitionFunc2  = ffi "%1[%2] = %3"
 
-ngDirectiveDefinitionFunc3 :: DirectiveDefinition -> String -> (a -> b -> c -> Fay()) -> Fay()
-ngDirectiveDefinitionFunc3 = ffi "%1[%2] = %3"
+ngDirectiveDefinitionFunc3  :: DirectiveDefinition -> String -> (a -> b -> c -> Fay()) -> Fay()
+ngDirectiveDefinitionFunc3  = ffi "%1[%2] = %3"
 
 ngDirectiveDefinitionFunc3' :: DirectiveDefinition -> String -> (a -> b -> c -> Fay Linking) -> Fay()
 ngDirectiveDefinitionFunc3' = ffi "%1[%2] = %3"
 
-ngDirectiveDefinitionStr   :: DirectiveDefinition -> String -> String -> Fay()
-ngDirectiveDefinitionStr   = ffi "%1[%2] = %3"
+ngDirectiveDefinitionStr    :: DirectiveDefinition -> String -> String -> Fay()
+ngDirectiveDefinitionStr    = ffi "%1[%2] = %3"
 
-ngDirectiveDefinitionBool  :: DirectiveDefinition -> String -> Bool -> Fay()
-ngDirectiveDefinitionBool  = ffi "%1[%2] = %3"
+ngDirectiveDefinitionBool   :: DirectiveDefinition -> String -> Bool -> Fay()
+ngDirectiveDefinitionBool   = ffi "%1[%2] = %3"
 
-ngDirectiveDefinitionInt   :: DirectiveDefinition -> String -> Int -> Fay()
-ngDirectiveDefinitionInt   = ffi "%1[%2] = %3"
+ngDirectiveDefinitionInt    :: DirectiveDefinition -> String -> Int -> Fay()
+ngDirectiveDefinitionInt    = ffi "%1[%2] = %3"
 
-ngDirectiveDefinition' ::  [DirectiveDefinitionConf] -> DirectiveDefinition -> Fay DirectiveDefinition
+ngDirectiveDefinition'      ::[DirectiveDefinitionConf] -> DirectiveDefinition -> Fay DirectiveDefinition
 ngDirectiveDefinition' []                 d = return d 
 ngDirectiveDefinition' [(Priority x)]     d = ngDirectiveDefinitionInt    d "priority"     x  >>= \_ -> return d
 ngDirectiveDefinition' [(Template x)]     d = ngDirectiveDefinitionStr    d "template"     x  >>= \_ -> return d
