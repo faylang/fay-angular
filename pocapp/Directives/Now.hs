@@ -15,12 +15,8 @@ link scope element attrs = do
   setHtml (pack . show $ time) element
   return ()
 
-now :: Directive
-now [l] = do
-  def <- newNgDirectiveDef
-  ngDirectiveDef def l
-  return def
-
 init :: NgModule -> Fay()
 init m = do
-  now [(Link link)] >>= ngDirective m "now"
+  ngDirectiveDef [(Link link)] >>= ngDirective m "now"
+
+init _ = return ()

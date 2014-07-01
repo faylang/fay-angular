@@ -36,6 +36,22 @@ ngDirectiveDefFunc2 = ffi "%1[%2] = %3"
 ngDirectiveDefFunc3 :: DirectiveDef -> String -> (a -> b -> c -> Fay()) -> Fay()
 ngDirectiveDefFunc3 = ffi "%1[%2] = %3"
 
-ngDirectiveDef :: DirectiveDef -> DirectiveDefConf -> Fay()
-ngDirectiveDef def (Link f) = do ngDirectiveDefFunc3 def "link" f
+ngDirectiveDefStr   :: DirectiveDef -> String -> String -> Fay()
+ngDirectiveDefStr = ffi "%1[%2] = %3"
+
+ngDirectiveDefBool  :: DirectiveDef -> String -> Bool -> Fay()
+ngDirectiveDefBool = ffi "%1[%2] = %3"
+
+ngDirectiveDef' ::  [DirectiveDefConf] -> DirectiveDef -> Fay DirectiveDef
+ngDirectiveDef' []               d = return d 
+ngDirectiveDef' [(Link linking)] d = ngDirectiveDefFunc3 d "link" linking >>= \_ -> return d
+ngDirectiveDef' [(Transclude b)] d = ngDirectiveDefBool  d "transclude" b  >>= \_ -> return d
+ngDirectiveDef' (x:xs) d = do 
+  ngDirectiveDef' [x]  d
+  ngDirectiveDef' xs   d
+  return d
+
+ngDirectiveDef :: [DirectiveDefConf] -> Fay DirectiveDef
+ngDirectiveDef confs = newNgDirectiveDef >>= ngDirectiveDef' confs >>= return
+
 
