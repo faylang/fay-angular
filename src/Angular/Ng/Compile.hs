@@ -3,55 +3,74 @@ module Angular.Ng.Compile where
 import FFI
 import JQuery
 import Angular.Ng.RootScope
+import Angular.Ng.Controller 
 import Angular.Module
+
+type DirectiveName = String
+type Directive     = [DirectiveDefinitionConf] -> Fay DirectiveDefinition
+type Linking       = (NgScope -> JQuery -> Attrs -> Fay())
+type Compiling     = (NgScope -> JQuery -> Attrs -> Fay Linking)
 
 data Attrs
 
-data DirectiveDefConf = Restrict Char
-                      | Transclude Bool
-                      | TemplateUrl String
-                      | Scope
-                      | Link Linking
+data DirectiveDefinitionConf = Priority Int
+                             | Template String
+                             | TemplateUrl String
+                             | Transclude Bool
+                             | Restrict String
+                             | Scope Bool -- not done
+                             | Controller NgController
+                             | ControllerAs String
+                             | Require String
+                             | Link Linking
+                             | Compile Compiling
 
-data DirectiveDef
-
-type DirectiveName = String
-type Directive     = [DirectiveDefConf] -> Fay DirectiveDef
-
-type Linking       = (NgScope -> JQuery -> Attrs -> Fay())
+data DirectiveDefinition
 
 --                         DirectiveName             
-ngDirective :: NgModule -> String -> DirectiveDef -> Fay()
+ngDirective :: NgModule -> String -> DirectiveDefinition -> Fay()
 ngDirective = ffi "%1.directive(%2, function(){ return %3 })"
 
-newNgDirectiveDef   :: Fay DirectiveDef
-newNgDirectiveDef   = ffi "new Object()"
+newNgDirectiveDefinition   :: Fay DirectiveDefinition
+newNgDirectiveDefinition   = ffi "new Object()"
 
-ngDirectiveDefFunc  :: DirectiveDef -> String -> (a -> Fay()) -> Fay()
-ngDirectiveDefFunc  = ffi "%1[%2] = %3"
- 
-ngDirectiveDefFunc2 :: DirectiveDef -> String -> (a -> b -> Fay()) -> Fay()
-ngDirectiveDefFunc2 = ffi "%1[%2] = %3"
+ngDirectiveDefinitionFunc2 :: DirectiveDefinition -> String -> (a -> b -> Fay()) -> Fay()
+ngDirectiveDefinitionFunc2 = ffi "%1[%2] = %3"
 
-ngDirectiveDefFunc3 :: DirectiveDef -> String -> (a -> b -> c -> Fay()) -> Fay()
-ngDirectiveDefFunc3 = ffi "%1[%2] = %3"
+ngDirectiveDefinitionFunc3 :: DirectiveDefinition -> String -> (a -> b -> c -> Fay()) -> Fay()
+ngDirectiveDefinitionFunc3 = ffi "%1[%2] = %3"
 
-ngDirectiveDefStr   :: DirectiveDef -> String -> String -> Fay()
-ngDirectiveDefStr = ffi "%1[%2] = %3"
+ngDirectiveDefinitionFunc3' :: DirectiveDefinition -> String -> (a -> b -> c -> Fay Linking) -> Fay()
+ngDirectiveDefinitionFunc3' = ffi "%1[%2] = %3"
 
-ngDirectiveDefBool  :: DirectiveDef -> String -> Bool -> Fay()
-ngDirectiveDefBool = ffi "%1[%2] = %3"
+ngDirectiveDefinitionStr   :: DirectiveDefinition -> String -> String -> Fay()
+ngDirectiveDefinitionStr   = ffi "%1[%2] = %3"
 
-ngDirectiveDef' ::  [DirectiveDefConf] -> DirectiveDef -> Fay DirectiveDef
-ngDirectiveDef' []               d = return d 
-ngDirectiveDef' [(Link linking)] d = ngDirectiveDefFunc3 d "link" linking >>= \_ -> return d
-ngDirectiveDef' [(Transclude b)] d = ngDirectiveDefBool  d "transclude" b  >>= \_ -> return d
-ngDirectiveDef' (x:xs) d = do 
-  ngDirectiveDef' [x]  d
-  ngDirectiveDef' xs   d
-  return d
+ngDirectiveDefinitionBool  :: DirectiveDefinition -> String -> Bool -> Fay()
+ngDirectiveDefinitionBool  = ffi "%1[%2] = %3"
 
-ngDirectiveDef :: [DirectiveDefConf] -> Fay DirectiveDef
-ngDirectiveDef confs = newNgDirectiveDef >>= ngDirectiveDef' confs >>= return
+ngDirectiveDefinitionInt   :: DirectiveDefinition -> String -> Int -> Fay()
+ngDirectiveDefinitionInt   = ffi "%1[%2] = %3"
+
+ngDirectiveDefinition' ::  [DirectiveDefinitionConf] -> DirectiveDefinition -> Fay DirectiveDefinition
+ngDirectiveDefinition' []                 d = return d 
+ngDirectiveDefinition' [(Priority x)]     d = ngDirectiveDefinitionInt    d "priority"     x  >>= \_ -> return d
+ngDirectiveDefinition' [(Template x)]     d = ngDirectiveDefinitionStr    d "template"     x  >>= \_ -> return d
+ngDirectiveDefinition' [(TemplateUrl x)]  d = ngDirectiveDefinitionStr    d "templateUrl"  x  >>= \_ -> return d
+ngDirectiveDefinition' [(Transclude x)]   d = ngDirectiveDefinitionBool   d "transclude"   x  >>= \_ -> return d
+ngDirectiveDefinition' [(Restrict x)]     d = ngDirectiveDefinitionStr    d "restrict"     x  >>= \_ -> return d
+ngDirectiveDefinition' [(Scope x)]        d = ngDirectiveDefinitionBool   d "scope"        x  >>= \_ -> return d
+ngDirectiveDefinition' [(Controller x)]   d = ngDirectiveDefinitionFunc2  d "controller"   x  >>= \_ -> return d
+ngDirectiveDefinition' [(ControllerAs x)] d = ngDirectiveDefinitionStr    d "controllerAs" x  >>= \_ -> return d
+ngDirectiveDefinition' [(Require x)]      d = ngDirectiveDefinitionStr    d "require"      x  >>= \_ -> return d
+ngDirectiveDefinition' [(Link x)]         d = ngDirectiveDefinitionFunc3  d "link"         x  >>= \_ -> return d
+ngDirectiveDefinition' [(Compile x)]      d = ngDirectiveDefinitionFunc3' d "compile"      x  >>= \_ -> return d
+
+ngDirectiveDefinition' (x:xs) d = do ngDirectiveDefinition' [x]  d
+                                     ngDirectiveDefinition' xs   d
+                                     return d
+
+ngDirectiveDefinition :: [DirectiveDefinitionConf] -> Fay DirectiveDefinition
+ngDirectiveDefinition confs = newNgDirectiveDefinition >>= ngDirectiveDefinition' confs >>= return
 
 

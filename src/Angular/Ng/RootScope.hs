@@ -5,6 +5,8 @@ import FFI
 data NgScope
 data NgModelKey 
 data NgModelRef = NgModelRef NgScope NgModelKey
+
+refPrefix :: String
 refPrefix = "m."
 
 ngModelKey :: String -> Fay NgModelKey
