@@ -5,6 +5,7 @@ import Fay.Text
 import FFI
 import Angular.Ng.Compile
 import Angular.Module
+--import Data.Time.Clock
 
 getTime :: Fay int
 getTime = ffi "Date.now()"
